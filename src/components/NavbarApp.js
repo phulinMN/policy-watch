@@ -25,7 +25,7 @@ export default class NavbarApp extends Component {
   render() {
     return (
       <div>
-        <SideNav
+        <SideNav style={{'position': 'fixed'}}
           onSelect={(selected) => {
               // Add your code here
               console.log('b')
@@ -49,20 +49,10 @@ export default class NavbarApp extends Component {
                   <NavText>
                       Web Mining
                   </NavText>
-                  <NavItem eventKey="charts/linechart">
-                      <NavText>
-                          Line Chart
-                      </NavText>
-                  </NavItem>
-                  <NavItem eventKey="charts/barchart">
-                      <NavText>
-                          Bar Chart
-                      </NavText>
-                  </NavItem>
               </NavItem>
           </SideNav.Nav>
         </SideNav>
-        <div className={ this.state.isOpen ? "content expand" : "content"}>
+        <div className={ this.state.isOpen ? "Navbar expand" : "Navbar"}>
           <h2 className="">Policy Watch</h2>
         </div>
       </div>
