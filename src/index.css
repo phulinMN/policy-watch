@@ -10,3 +10,6 @@ body {
 code {
   font-family: 'Nunito', sans-serif !important;
 }
+.table-text {
+  color: rgba(255, 255, 255, 0.7);
+}

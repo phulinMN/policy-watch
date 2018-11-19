@@ -31,16 +31,44 @@ class App extends Component {
     xAxis: {
       type: 'category',
       data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  },
-  yAxis: {
-      type: 'value'
-  },
-  series: [{
-      data: [120, 200, 150, 80, 70, 110, 130],
-      type: 'bar'
-  }]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [120, 200, 150, 80, 70, 110, 130],
+        type: 'bar'
+    }]
   })
   render() {
+    let data = []
+    for (var i = 0; i < 10; i++) {
+      data.push(i);
+    }
+    // var request = require('request');
+    // request.get();
+    var request = require('request');
+
+    var options = {
+      url: '10.3.132.187:3000/country',
+      headers: {
+        'User-Agent': 'request'
+      }
+    };
+
+    function callback(error, response, body) {
+
+      console.log(error);
+      console.log(body);
+      console.log(response);
+      if (!error && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        // console.log(info.stargazers_count + " Stars");
+        // console.log(info.forks_count + " Forks");
+      }
+    }
+
+    request(options, callback);
     return (
       <div className="App">
         <header className="App-header">
@@ -64,12 +92,12 @@ class App extends Component {
                 </CardTitle>
                 {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
                 <CardText>
-                  <ReactEcharts
+                  {/* <ReactEcharts
                     option={this.getOption()}
                     style={{height: '400px', width: '100%'}}
                     opts={{ renderer: 'svg' }}
                     className='react_for_echarts'
-                    />
+                    /> */}
                 </CardText>
               </CardBody>
             </Card>
@@ -85,65 +113,30 @@ class App extends Component {
                   </Row>
                 </CardTitle>
                 <CardText>
-                  <Table>
-                  <thead className=" text-primary">
-                      <tr>
+                  <Table className="table-text">
+                  <thead>
+                      <tr className="text-center">
                         <th>
-                          Port No.
+                          Rank
                         </th>
                         <th>
-                          Port Name
+                          Country
                         </th>
                         <th className="text-center">
-                          Access
+                          Count
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          1433
-                        </td>
-                        <td>
-                          MS SQL
-                        </td>
-                        <td className="text-center">
-                          1000
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          3389
-                        </td>
-                        <td>
-                          RDP
-                        </td>
-                        <td className="text-center">
-                          900
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          80
-                        </td>
-                        <td>
-                          HTTP
-                        </td>
-                        <td className="text-center">
-                          900
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          123
-                        </td>
-                        <td>
-                          NTP
-                        </td>
-                        <td className="text-center">
-                          100
-                        </td>
-                      </tr>
+                      {
+                        data.map(d => {
+                          return <tr>
+                            <td>{d}</td>
+                            <td>{d}</td>
+                            <td>{d}</td>
+                          </tr>
+                        })
+                      }
                     </tbody>
                   </Table>
                 </CardText>
