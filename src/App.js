@@ -9,15 +9,28 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie, faStroopwafel } from '@fortawesome/free-solid-svg-icons'
 library.add(faChartPie, faStroopwafel)
-// echarts.registerTheme('dark', {
-//   backgroundColor: '#f4cccc'
-// });
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sideBar: true
+      sideBar: true,
+      country: [],
+      count: []
     };    
+  }
+  componentDidMount() {
+    fetch('http://10.3.132.187:3000/country')
+      .then(dataWrappedByPromise => dataWrappedByPromise.json())
+      .then(data => {
+          for (var i = 0; i< 10; i++) {
+            var addCountry = this.state.country.concat(data[0][i].key);
+            var addCount = this.state.count.concat(data[0][i].doc_count);
+            console.log(data[0][i])
+            this.setState({ country: addCountry });
+            this.setState({ count: addCount });
+          }
+      })
   }
   myCallback = (dataFromChild) => {
     this.setState({ sideBar: dataFromChild });
@@ -40,35 +53,12 @@ class App extends Component {
         type: 'bar'
     }]
   })
+  
   render() {
-    let data = []
+    let numbers = []
     for (var i = 0; i < 10; i++) {
-      data.push(i);
+      numbers.push(i);
     }
-    // var request = require('request');
-    // request.get();
-    var request = require('request');
-
-    var options = {
-      url: '10.3.132.187:3000/country',
-      headers: {
-        'User-Agent': 'request'
-      }
-    };
-
-    function callback(error, response, body) {
-
-      console.log(error);
-      console.log(body);
-      console.log(response);
-      if (!error && response.statusCode == 200) {
-        var info = JSON.parse(body);
-        // console.log(info.stargazers_count + " Stars");
-        // console.log(info.forks_count + " Forks");
-      }
-    }
-
-    request(options, callback);
     return (
       <div className="App">
         <header className="App-header">
@@ -129,11 +119,11 @@ class App extends Component {
                     </thead>
                     <tbody>
                       {
-                        data.map(d => {
+                        numbers.map(d => {
                           return <tr>
-                            <td>{d}</td>
-                            <td>{d}</td>
-                            <td>{d}</td>
+                            <td>{d+1}</td>
+                            <td>{this.state.country[d]}</td>
+                            <td>{this.state.count[d]}</td>
                           </tr>
                         })
                       }
