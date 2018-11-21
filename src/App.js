@@ -7,8 +7,8 @@ import ReactEcharts from 'echarts-for-react';
 import './App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartPie, faStroopwafel } from '@fortawesome/free-solid-svg-icons'
-library.add(faChartPie, faStroopwafel)
+import { faChartPie, faStroopwafel, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+library.add(faChartPie, faStroopwafel, faChevronLeft, faChevronRight)
 
 class App extends Component {
   constructor(props) {
@@ -135,34 +135,32 @@ class App extends Component {
                         <Col xs="12" md="8" lg="8"><h4>Country</h4></Col>
                       </Row>
                     </CardTitle>
-                    <CardText>
-                      <Table className="table-text">
-                      <thead>
-                          <tr className="text-center">
-                            <th>
-                              Rank
-                            </th>
-                            <th>
-                              Country
-                            </th>
-                            <th className="text-center">
-                              Count
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {
-                            numbers.map(d => {
-                              return <tr>
-                                <td>{d+1}</td>
-                                <td>{this.state.country[d]}</td>
-                                <td>{this.state.count[d]}</td>
-                              </tr>
-                            })
-                          }
-                        </tbody>
-                      </Table>
-                    </CardText>
+                    <Table className="table-text">
+                    <thead>
+                        <tr className="text-center">
+                          <th>
+                            Rank
+                          </th>
+                          <th>
+                            Country
+                          </th>
+                          <th className="text-center">
+                            Count
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          numbers.map((d, index) => {
+                            return <tr key={index}>
+                              <td>{d+1}</td>
+                              <td>{this.state.country[d]}</td>
+                              <td>{this.state.count[d]}</td>
+                            </tr>
+                          })
+                        }
+                      </tbody>
+                    </Table>
                   </CardBody>
                 </Card>
               </Col>
@@ -174,61 +172,63 @@ class App extends Component {
                           <Col xs="12" md="8" lg="8"><h4>Port</h4></Col>
                         </Row>
                       </CardTitle>
-                      <CardText>
-                        <Table className="table-text">
-                          <thead>
-                            <tr className="text-center">
-                              <th>
-                                Port No.
-                              </th>
-                              <th>
-                                Name
-                              </th>
-                              <th className="text-center">
-                                Count
-                              </th>
-                              <th className="text-center">
-                                Source IP
-                              </th>
-                              <th className="text-center">
-                                Destination IP
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {
-                              numbers.map(d => {
-                                d += (10*(this.state.page-1));
-                                // console.log(d);
-                                return <tr>
-                                  <td>{this.state.portNo[d]}</td>
-                                  <td>...</td>
-                                  <td>{this.state.portCount[d]}</td>
-                                  <td>...</td>
-                                  <td>...</td>
-                                </tr>
-                              })
-                            }
-                          </tbody>
-                        </Table>
-                        <ButtonGroup>
-                          <Button onClick={() => this.onRadioBtnClick('back')}>back</Button>
+                      <Table className="table-text">
+                        <thead>
+                          <tr className="text-center">
+                            <th>
+                              Port No.
+                            </th>
+                            <th>
+                              Name
+                            </th>
+                            <th className="text-center">
+                              Count
+                            </th>
+                            <th className="text-center">
+                              Source IP
+                            </th>
+                            <th className="text-center">
+                              Destination IP
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
                           {
-                            buttons.map(b => {
-                              let i = 0;
-                              if (this.state.page%5 != 0) {
-                                i = Math.floor(this.state.page/5);
-                              } else {
-                                i = (this.state.page/5) - 1;
-                              }
-                              b += i*5;
-                              // console.log(b);
-                              return <Button onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
+                            numbers.map((d,index) => {
+                              d += (10*(this.state.page-1));
+                              // console.log(d);
+                              return <tr key={index}>
+                                <td>{this.state.portNo[d]}</td>
+                                <td>...</td>
+                                <td>{this.state.portCount[d]}</td>
+                                <td>...</td>
+                                <td>...</td>
+                              </tr>
                             })
                           }
-                          <Button onClick={() => this.onRadioBtnClick('next')}>next</Button>
-                        </ButtonGroup>
-                      </CardText>
+                        </tbody>
+                      </Table>
+                      <Row>
+                        <Col lg={{ size: 6, offset: 3 }}>
+                          <ButtonGroup>
+                            <Button onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
+                            {
+                              buttons.map((b, index) => {
+                                let i = 0;
+                                if (this.state.page%5 != 0) {
+                                  i = Math.floor(this.state.page/5);
+                                } else {
+                                  i = (this.state.page/5) - 1;
+                                }
+                                b += i*5;
+                                // console.log(b);
+                                return <Button key={index} onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
+                              })
+                            }
+                            <Button onClick={() => this.onRadioBtnClick('next')}><FontAwesomeIcon icon="chevron-right" color="white" size="lg" /></Button>
+                          </ButtonGroup>
+                        </Col>
+                      </Row>
                     </CardBody>
                   </Card>
                 </Col>
