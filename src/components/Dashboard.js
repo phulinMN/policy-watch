@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button, ButtonGroup, Row, Col, Table } from 'reactstrap';
+  CardTitle, Input, Button, ButtonGroup, Row, Col, Table } from 'reactstrap';
 import ReactEcharts from 'echarts-for-react';
 import '../App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -18,10 +18,18 @@ export default class Dashboard extends Component {
       count: [],
       portNo: [],
       portCount: [],
-      page: 1
+      page: 1,
+      value: ''
     };
+    this.handleChange = this.handleChange.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
   }
+
+  handleChange(event) {
+    console.log(event.target.value);
+    this.setState({value: event.target.value});
+  }
+
   myCallback = (dataFromChild) => {
     this.setState({ sideBar: dataFromChild });
   }
@@ -147,7 +155,7 @@ export default class Dashboard extends Component {
                     </Row>
                   </CardTitle>
                   <Table className="table-text">
-                  <thead>
+                    <thead>
                       <tr className="text-center">
                         <th>
                           Rank
@@ -180,7 +188,8 @@ export default class Dashboard extends Component {
                 <CardBody>
                   <CardTitle>
                     <Row>
-                      <Col xs="12" md="8" lg="8"><h4>Port</h4></Col>
+                      <Col xs="6" md="6" lg="8"><h4>Port</h4></Col>
+                      <Col xs="6" md="6" lg="4"><Input type="text" value={this.state.value} onChange={this.handleChange} name="search" id="searchPort" placeholder="Search" /></Col>
                     </Row>
                   </CardTitle>
                   <Table className="table-text">
@@ -220,7 +229,7 @@ export default class Dashboard extends Component {
                     </tbody>
                   </Table>
                   <Row>
-                    <Col lg={{ size: 6, offset: 3 }}>
+                    <Col xs={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 6, offset: 3 }}>
                       <ButtonGroup>
                         <Button onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
                         {
