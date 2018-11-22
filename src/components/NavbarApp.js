@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartPie, faCoins } from '@fortawesome/free-solid-svg-icons'
-library.add(faChartPie, faCoins)
+import { faChartPie, faUser } from '@fortawesome/free-solid-svg-icons'
+library.add(faChartPie, faUser)
 
 export default class NavbarApp extends Component {
   constructor(props) {
@@ -39,15 +40,15 @@ export default class NavbarApp extends Component {
                     <FontAwesomeIcon icon="chart-pie" color="white" size="lg" />
                   </NavIcon>
                   <NavText>
-                      Dashboard 
+                    <Link to="/">Dashboard</Link>
                   </NavText>
               </NavItem>
               <NavItem eventKey="charts">
                   <NavIcon>
-                    <FontAwesomeIcon icon="coins" color="white" size="lg" />
+                    <Link to="/user-request"><FontAwesomeIcon icon="user" color="white" size="lg" /></Link>
                   </NavIcon>
                   <NavText>
-                      Web Mining
+                      <Link to="/user-request">User Request</Link>
                   </NavText>
               </NavItem>
           </SideNav.Nav>
