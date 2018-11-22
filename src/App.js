@@ -5,32 +5,25 @@ import NavbarApp from './components/NavbarApp'
 import User from './components/User'
 import Dashboard from './components/Dashboard'
 
-// import { Card, CardImg, CardText, CardBody,
-//   CardTitle, CardSubtitle, Button, ButtonGroup, Row, Col, Table } from 'reactstrap';
-// import ReactEcharts from 'echarts-for-react';
-// import './App.css';
-// import { library } from '@fortawesome/fontawesome-svg-core'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faChartPie, faStroopwafel, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-// library.add(faChartPie, faStroopwafel, faChevronLeft, faChevronRight)
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sideBar: true,
-      country: [],
-      count: [],
-      portNo: [],
-      portCount: [],
-      page: 1
+      path: 'home'
     };
     // this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
   }
   
   myCallback = (dataFromChild) => {
     this.setState({ sideBar: dataFromChild });
-    // console.log(this.state.sideBar)
+    console.log(this.state.sideBar)
+  }
+
+  getComponent = (p) => {
+    this.setState({path: p});
+    console.log(this.state.path);
   }
   
   render() {
@@ -38,14 +31,15 @@ class App extends Component {
       <Router>
         <div className="App">
           <header className="App-header">
-            <NavbarApp callbackFromParent={this.myCallback}></NavbarApp>
+            <NavbarApp callbackFromParent={this.myCallback} getComponent={this.getComponent}></NavbarApp>
           </header>
-          <Route path="/" component={Dashboard} />
+          <Route exact path="/" component={Dashboard} />
           <Route path="/user-request" component={User} />
         </div>
       </Router>
     );
   }
 }
+
 
 export default App;

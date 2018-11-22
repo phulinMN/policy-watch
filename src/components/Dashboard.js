@@ -24,7 +24,6 @@ export default class Dashboard extends Component {
   }
   myCallback = (dataFromChild) => {
     this.setState({ sideBar: dataFromChild });
-  // console.log(this.state.sideBar)
   }
   onRadioBtnClick(rSelected) {
     if(rSelected == "back") {
@@ -65,12 +64,6 @@ export default class Dashboard extends Component {
             this.setState({ portCount: addCount });
           }
       })
-  }
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-    this.props.callbackFromParent(this.state.isOpen);
   }
 
 
@@ -120,141 +113,138 @@ export default class Dashboard extends Component {
     return (
       <div className={ this.state.sideBar ? "content" : "content expand"}>
         <div className="card-box">
+          <Card body inverse style={{ backgroundColor: 'rgb(39, 41, 61)' }}>
+            <CardBody>
+              <CardTitle>
+                <Row>
+                  <Col xs="12" md="4" lg="8"><h2>Visualize well known port</h2></Col>
+                  <Col xs="12" md="8" lg="4">
+                    <ButtonGroup>
+                      <Button>port no.</Button>
+                      <Button>port no.</Button>
+                      <Button>port no.</Button>
+                    </ButtonGroup>
+                  </Col>
+                </Row>
+              </CardTitle>
+              <ReactEcharts
+                option={this.getOption()}
+                style={{height: '400px', width: '100%'}}
+                opts={{ renderer: 'svg' }}
+                className='react_for_echarts'
+                />
+            </CardBody>
+          </Card>
+        </div>
+        <div className="card-box">
+          <Row>
+            <Col lg="6">
               <Card body inverse style={{ backgroundColor: 'rgb(39, 41, 61)' }}>
                 <CardBody>
                   <CardTitle>
                     <Row>
-                      <Col xs="12" md="4" lg="8"><h2>Visualize well known port</h2></Col>
-                      <Col xs="12" md="8" lg="4">
-                        <ButtonGroup>
-                          <Button>port no.</Button>
-                          <Button>port no.</Button>
-                          <Button>port no.</Button>
-                        </ButtonGroup>
-                      </Col>
+                      <Col xs="12" md="8" lg="8"><h4>Country</h4></Col>
                     </Row>
                   </CardTitle>
-                  {/* <CardSubtitle>Card subtitle</CardSubtitle> */}
-                  <CardText>
-                    <ReactEcharts
-                      option={this.getOption()}
-                      style={{height: '400px', width: '100%'}}
-                      opts={{ renderer: 'svg' }}
-                      className='react_for_echarts'
-                      />
-                  </CardText>
+                  <Table className="table-text">
+                  <thead>
+                      <tr className="text-center">
+                        <th>
+                          Rank
+                        </th>
+                        <th>
+                          Country
+                        </th>
+                        <th className="text-center">
+                          Count
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        numbers.map((d, index) => {
+                          return <tr key={index}>
+                            <td>{d+1}</td>
+                            <td>{this.state.country[d]}</td>
+                            <td>{this.state.count[d]}</td>
+                          </tr>
+                        })
+                      }
+                    </tbody>
+                  </Table>
                 </CardBody>
               </Card>
-            </div>
-            <div className="card-box">
-              <Row>
-                <Col lg="6">
-                  <Card body inverse style={{ backgroundColor: 'rgb(39, 41, 61)' }}>
-                    <CardBody>
-                      <CardTitle>
-                        <Row>
-                          <Col xs="12" md="8" lg="8"><h4>Country</h4></Col>
-                        </Row>
-                      </CardTitle>
-                      <Table className="table-text">
-                      <thead>
-                          <tr className="text-center">
-                            <th>
-                              Rank
-                            </th>
-                            <th>
-                              Country
-                            </th>
-                            <th className="text-center">
-                              Count
-                            </th>
+            </Col>
+            <Col lg="6">
+              <Card body inverse style={{ backgroundColor: 'rgb(39, 41, 61)' }}>
+                <CardBody>
+                  <CardTitle>
+                    <Row>
+                      <Col xs="12" md="8" lg="8"><h4>Port</h4></Col>
+                    </Row>
+                  </CardTitle>
+                  <Table className="table-text">
+                    <thead>
+                      <tr className="text-center">
+                        <th>
+                          Port No.
+                        </th>
+                        <th>
+                          Name
+                        </th>
+                        <th className="text-center">
+                          Count
+                        </th>
+                        <th className="text-center">
+                          Source IP
+                        </th>
+                        <th className="text-center">
+                          Destination IP
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        numbers.map((d,index) => {
+                          d += (10*(this.state.page-1));
+                          // console.log(d);
+                          return <tr key={index}>
+                            <td>{this.state.portNo[d]}</td>
+                            <td>...</td>
+                            <td>{this.state.portCount[d]}</td>
+                            <td>...</td>
+                            <td>...</td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {
-                            numbers.map((d, index) => {
-                              return <tr key={index}>
-                                <td>{d+1}</td>
-                                <td>{this.state.country[d]}</td>
-                                <td>{this.state.count[d]}</td>
-                              </tr>
-                            })
-                          }
-                        </tbody>
-                      </Table>
-                    </CardBody>
-                  </Card>
-                </Col>
-                <Col lg="6">
-                    <Card body inverse style={{ backgroundColor: 'rgb(39, 41, 61)' }}>
-                      <CardBody>
-                        <CardTitle>
-                          <Row>
-                            <Col xs="12" md="8" lg="8"><h4>Port</h4></Col>
-                          </Row>
-                        </CardTitle>
-                        <Table className="table-text">
-                          <thead>
-                            <tr className="text-center">
-                              <th>
-                                Port No.
-                              </th>
-                              <th>
-                                Name
-                              </th>
-                              <th className="text-center">
-                                Count
-                              </th>
-                              <th className="text-center">
-                                Source IP
-                              </th>
-                              <th className="text-center">
-                                Destination IP
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {
-                              numbers.map((d,index) => {
-                                d += (10*(this.state.page-1));
-                                // console.log(d);
-                                return <tr key={index}>
-                                  <td>{this.state.portNo[d]}</td>
-                                  <td>...</td>
-                                  <td>{this.state.portCount[d]}</td>
-                                  <td>...</td>
-                                  <td>...</td>
-                                </tr>
-                              })
+                        })
+                      }
+                    </tbody>
+                  </Table>
+                  <Row>
+                    <Col lg={{ size: 6, offset: 3 }}>
+                      <ButtonGroup>
+                        <Button onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
+                        {
+                          buttons.map((b, index) => {
+                            let i = 0;
+                            if (this.state.page%5 != 0) {
+                              i = Math.floor(this.state.page/5);
+                            } else {
+                              i = (this.state.page/5) - 1;
                             }
-                          </tbody>
-                        </Table>
-                        <Row>
-                          <Col lg={{ size: 6, offset: 3 }}>
-                            <ButtonGroup>
-                              <Button onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
-                              {
-                                buttons.map((b, index) => {
-                                  let i = 0;
-                                  if (this.state.page%5 != 0) {
-                                    i = Math.floor(this.state.page/5);
-                                  } else {
-                                    i = (this.state.page/5) - 1;
-                                  }
-                                  b += i*5;
-                                  // console.log(b);
-                                  return <Button key={index} onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
-                                })
-                              }
-                              <Button onClick={() => this.onRadioBtnClick('next')}><FontAwesomeIcon icon="chevron-right" color="white" size="lg" /></Button>
-                            </ButtonGroup>
-                          </Col>
-                        </Row>
-                      </CardBody>
-                    </Card>
-                  </Col>
-              </Row>
-            </div>
+                            b += i*5;
+                            // console.log(b);
+                            return <Button key={index} onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
+                          })
+                        }
+                        <Button onClick={() => this.onRadioBtnClick('next')}><FontAwesomeIcon icon="chevron-right" color="white" size="lg" /></Button>
+                      </ButtonGroup>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
       </div>
     );
   }

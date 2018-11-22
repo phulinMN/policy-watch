@@ -12,7 +12,8 @@ export default class NavbarApp extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      path: 'home'
     };
   }
 
@@ -23,13 +24,21 @@ export default class NavbarApp extends Component {
     this.props.callbackFromParent(this.state.isOpen);
   }
 
+  selectedNav(p) {
+    this.setState({
+      path: p
+    });
+    // this.props.sendPath(this.state.path);
+    this.props.getComponent(p);
+  }
+
   render() {
     return (
       <div>
         <SideNav style={{'position': 'fixed'}}
           onSelect={(selected) => {
-              // Add your code here
-              console.log('b')
+            this.selectedNav(selected);
+            // console.log(selected)
           }}>
           <SideNav.Toggle
             onClick={this.toggle.bind(this)}
@@ -37,13 +46,13 @@ export default class NavbarApp extends Component {
           <SideNav.Nav defaultSelected="home">
               <NavItem eventKey="home">
                   <NavIcon>
-                    <FontAwesomeIcon icon="chart-pie" color="white" size="lg" />
+                    <Link to="/"><FontAwesomeIcon icon="chart-pie" color="white" size="lg" /></Link>
                   </NavIcon>
                   <NavText>
                     <Link to="/">Dashboard</Link>
                   </NavText>
               </NavItem>
-              <NavItem eventKey="charts">
+              <NavItem eventKey="user">
                   <NavIcon>
                     <Link to="/user-request"><FontAwesomeIcon icon="user" color="white" size="lg" /></Link>
                   </NavIcon>
