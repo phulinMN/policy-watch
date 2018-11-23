@@ -66,6 +66,8 @@ export default class Dashboard extends Component {
     legend: {
       data:['销量']
     },
+    // color: '#1d8cf8',
+    color: '#e14eca',
     xAxis: {
       type: 'category',
       nameTextStyle: {
@@ -215,7 +217,7 @@ export default class Dashboard extends Component {
                   <Row>
                     <Col xs={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 6, offset: 3 }}>
                       <ButtonGroup>
-                        <Button onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
+                        <Button className="button-style" onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" size="lg" /></Button>
                         {
                           buttons.map((b, index) => {
                             let i = 0;
@@ -226,10 +228,10 @@ export default class Dashboard extends Component {
                             }
                             b += i*5;
                             // console.log(b);
-                            return <Button key={index} onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
+                            return <Button className="button-style" key={index} onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
                           })
                         }
-                        <Button onClick={() => this.onRadioBtnClick('next')}><FontAwesomeIcon icon="chevron-right" color="white" size="lg" /></Button>
+                        <Button className="button-style" onClick={() => this.onRadioBtnClick('next')}><FontAwesomeIcon icon="chevron-right" size="lg" /></Button>
                       </ButtonGroup>
                     </Col>
                   </Row>

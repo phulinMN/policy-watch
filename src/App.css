@@ -30,3 +30,15 @@
 .table-hover:hover {
   color: white;
 }
+
+.button-style {
+  color: #e14eca !important;
+  border-color: #e14eca !important;
+  background: transparent !important;
+}
+.button-style.active {
+  color: #ffffff !important;
+  background-color: #ba54f5 !important;
+  border-color: #cd23b2 !important;
+  border-color: #e14eca !important;;
+}

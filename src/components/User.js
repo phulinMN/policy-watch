@@ -21,11 +21,10 @@ export default class User extends Component {
       userIP: null,
       page: 1,
       value: 0,
-      n: 1,
       r: 1,
-      tofuIsReady: false
+      checked: false
     };
-
+    this.switchGraph = this.switchGraph.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
     this.onNext = this.onNext.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
@@ -96,6 +95,10 @@ export default class User extends Component {
         // console.log(this.state.user[0].key);
       })
   }
+  switchGraph(event) {
+    this.setState({ checked: !this.state.checked });
+    console.log(this.state.checked);
+  }
 
   render() {
     let numbers = []
@@ -142,7 +145,7 @@ export default class User extends Component {
                   <Row>
                     <Col xs={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 6, offset: 3 }}>
                       <ButtonGroup>
-                        <Button onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
+                        <Button className="button-style" onClick={() => this.onRadioBtnClick('back')}><FontAwesomeIcon icon="chevron-left" size="lg" /></Button>
                         {
                           buttons.map((b, index) => {
                             let i = 0;
@@ -152,10 +155,10 @@ export default class User extends Component {
                               i = (this.state.page/5) - 1;
                             }
                             b += i*5;
-                            return <Button key={index} onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
+                            return <Button className="button-style" key={index} onClick={() => this.onRadioBtnClick(b)} active={this.state.page === b}>{b}</Button>
                           })
                         }
-                        <Button onClick={() => this.onRadioBtnClick('next')}><FontAwesomeIcon icon="chevron-right" color="white" size="lg" /></Button>
+                        <Button className="button-style" onClick={() => this.onRadioBtnClick('next')}><FontAwesomeIcon icon="chevron-right" size="lg" /></Button>
                       </ButtonGroup>
                     </Col>
                   </Row>
@@ -171,10 +174,8 @@ export default class User extends Component {
                         <Col xs="10" md="10" lg="10"><h4>{this.state.value}</h4></Col>
                         <Col xs="2" md="2" lg="2">
                           <ToggleSwitch
-                            checked
-                            ref={(node) => {
-                              this.toggleSwitch = node;
-                            }}
+                            checked={this.state.checked}
+                            onChange={this.switchGraph}
                           />
                         </Col>
                       </Row>
@@ -209,7 +210,7 @@ export default class User extends Component {
                     <Row>
                       <Col xs={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 6, offset: 3 }}>
                         <ButtonGroup>
-                          <Button onClick={() => this.onNext('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
+                          <Button className="button-style" onClick={() => this.onNext('back')}><FontAwesomeIcon icon="chevron-left" size="lg" /></Button>
                           {
                             buttons.map((b, index) => {
                               let i = 0;
@@ -219,10 +220,10 @@ export default class User extends Component {
                                 i = (this.state.r/5) - 1;
                               }
                               b += i*5;
-                              return <Button key={index} onClick={() => this.onNext(b)} active={this.state.r === b}>{b}</Button>
+                              return <Button className="button-style" key={index} onClick={() => this.onNext(b)} active={this.state.r === b}>{b}</Button>
                             })
                           }
-                          <Button onClick={() => this.onNext('next')}><FontAwesomeIcon icon="chevron-right" color="white" size="lg" /></Button>
+                          <Button className="button-style" onClick={() => this.onNext('next')}><FontAwesomeIcon icon="chevron-right" size="lg" /></Button>
                         </ButtonGroup>
                       </Col>
                     </Row>
