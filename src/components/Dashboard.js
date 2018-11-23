@@ -14,10 +14,8 @@ export default class Dashboard extends Component {
     super(props);
     this.state = {
       sideBar: true,
-      country: [],
-      count: [],
-      portNo: [],
-      portCount: [],
+      country: null,
+      port: null,
       page: 1,
       value: ''
     };
@@ -53,24 +51,12 @@ export default class Dashboard extends Component {
     fetch('http://10.3.132.187:3000/country')
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
-          for (var i = 0; i< 10; i++) {
-            var addCountry = this.state.country.concat(data[0][i].key);
-            var addCount = this.state.count.concat(data[0][i].doc_count);
-            // console.log(data[0][i])
-            this.setState({ country: addCountry });
-            this.setState({ count: addCount });
-          }
+        this.setState({ country: data[0] });
       })
       fetch('http://10.3.132.187:3000/port')
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
-          for (var i = 0; i< 1000; i++) {
-            var addPort = this.state.portNo.concat(data[0][i].key);
-            var addCount = this.state.portCount.concat(data[0][i].doc_count);
-            // console.log(data[0][i])
-            this.setState({ portNo: addPort });
-            this.setState({ portCount: addCount });
-          }
+          this.setState({ port: data[0] });
       })
   }
 
@@ -91,7 +77,7 @@ export default class Dashboard extends Component {
           color: '#eee'
         }
       },
-      data: [this.state.portNo[0], this.state.portNo[1], this.state.portNo[2], this.state.portNo[3], this.state.portNo[4]]
+      data: [this.state.port[0].key, this.state.port[1].key, this.state.port[2].key, this.state.port[3].key, this.state.port[4].key]
     },
     yAxis: {
       type: 'value',
@@ -106,7 +92,7 @@ export default class Dashboard extends Component {
       }
     },
     series: [{
-        data: [this.state.portCount[0], this.state.portCount[1], this.state.portCount[2], this.state.portCount[3], this.state.portCount[4]],
+        data: [this.state.port[0].doc_count, this.state.port[1].doc_count, this.state.port[2].doc_count, this.state.port[3].doc_count, this.state.port[4].doc_count],
         type: 'bar'
     }]
   })
@@ -127,20 +113,24 @@ export default class Dashboard extends Component {
                 <Row>
                   <Col xs="12" md="4" lg="8"><h2>Visualize well known port</h2></Col>
                   <Col xs="12" md="8" lg="4">
-                    <ButtonGroup>
+                    {/* <ButtonGroup>
                       <Button>port no.</Button>
                       <Button>port no.</Button>
                       <Button>port no.</Button>
-                    </ButtonGroup>
+                    </ButtonGroup> */}
                   </Col>
                 </Row>
               </CardTitle>
-              <ReactEcharts
+              {
+                this.state.port &&
+                <ReactEcharts
                 option={this.getOption()}
                 style={{height: '400px', width: '100%'}}
                 opts={{ renderer: 'svg' }}
                 className='react_for_echarts'
                 />
+              }
+              
             </CardBody>
           </Card>
         </div>
@@ -170,11 +160,12 @@ export default class Dashboard extends Component {
                     </thead>
                     <tbody>
                       {
+                        this.state.country &&
                         numbers.map((d, index) => {
                           return <tr key={index}>
                             <td>{d+1}</td>
-                            <td>{this.state.country[d]}</td>
-                            <td>{this.state.count[d]}</td>
+                            <td>{this.state.country[d].key}</td>
+                            <td>{this.state.country[d].doc_count}</td>
                           </tr>
                         })
                       }
@@ -204,25 +195,18 @@ export default class Dashboard extends Component {
                         <th className="text-center">
                           Count
                         </th>
-                        <th className="text-center">
-                          Source IP
-                        </th>
-                        <th className="text-center">
-                          Destination IP
-                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {
+                        this.state.port &&
                         numbers.map((d,index) => {
                           d += (10*(this.state.page-1));
                           // console.log(d);
                           return <tr key={index}>
-                            <td>{this.state.portNo[d]}</td>
+                            <td>{this.state.port[d].key}</td>
                             <td>...</td>
-                            <td>{this.state.portCount[d]}</td>
-                            <td>...</td>
-                            <td>...</td>
+                            <td>{this.state.port[d].doc_count}</td>
                           </tr>
                         })
                       }

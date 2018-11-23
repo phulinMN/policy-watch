@@ -28,7 +28,6 @@ export default class NavbarApp extends Component {
     this.setState({
       path: p
     });
-    // this.props.sendPath(this.state.path);
     this.props.getComponent(p);
   }
 
@@ -38,12 +37,12 @@ export default class NavbarApp extends Component {
         <SideNav style={{'position': 'fixed'}}
           onSelect={(selected) => {
             this.selectedNav(selected);
-            // console.log(selected)
+            console.log(selected)
           }}>
           <SideNav.Toggle
             onClick={this.toggle.bind(this)}
              />
-          <SideNav.Nav defaultSelected="home">
+          <SideNav.Nav defaultSelected={this.state.path}>
               <NavItem eventKey="home">
                   <NavIcon>
                     <Link to="/"><FontAwesomeIcon icon="chart-pie" color="white" size="lg" /></Link>
@@ -52,7 +51,7 @@ export default class NavbarApp extends Component {
                     <Link to="/">Dashboard</Link>
                   </NavText>
               </NavItem>
-              <NavItem eventKey="user">
+              <NavItem eventKey="user-request">
                   <NavIcon>
                     <Link to="/user-request"><FontAwesomeIcon icon="user" color="white" size="lg" /></Link>
                   </NavIcon>

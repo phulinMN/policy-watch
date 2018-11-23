@@ -24,3 +24,9 @@
   position: relative;
   padding: 10px 10px 20px 10px;
 }
+.table-hover {
+  cursor: pointer;
+}
+.table-hover:hover {
+  color: white;
+}

@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, ButtonGroup, Row, Col, Table, Collapse } from 'reactstrap';
 import ReactEcharts from 'echarts-for-react';
+import ToggleSwitch from '@trendmicro/react-toggle-switch';
+import '@trendmicro/react-toggle-switch/dist/react-toggle-switch.css';
 import '../App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,13 +17,17 @@ export default class User extends Component {
     this.state = {
       sideBar: true,
       collapse: false,
-      userId: [],
-      count: [],
+      user: null,
+      userIP: null,
       page: 1,
-      value: ''
+      value: 0,
+      n: 1,
+      r: 1,
+      tofuIsReady: false
     };
 
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.onNext = this.onNext.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
   myCallback = (dataFromChild) => {
@@ -38,12 +44,17 @@ export default class User extends Component {
 
   toggleCollapse(p) {
     this.state.collapse = true;
-    console.log(this.state.collapse);
+    // console.log(p);
     this.setState({ collapse: this.state.collapse });
-    this.setState({ value: p });
-  }
-  getUser(a) {
-    // this.setState({value: a});
+    if (p != this.state.value) {
+      this.setState({ value: p });
+    }
+    fetch('http://10.3.132.187:3000/user_info/'+ p)
+      .then(dataWrappedByPromise => dataWrappedByPromise.json())
+      .then(data => {
+        this.setState({ userIP: data[0] });
+        // console.log(this.state.userIP);
+      })
   }
   onRadioBtnClick(rSelected) {
     if(rSelected == "back") {
@@ -61,17 +72,28 @@ export default class User extends Component {
     this.setState({ rSelected });
   }
 
+  onNext(rSelected) {
+    if(rSelected == "back") {
+      if(this.state.r != 1) {
+        this.state.r--;
+      } else {
+        this.state.r = 1;
+      }
+    } else if (rSelected == "next") {
+      this.state.r++;
+    }  else {
+      this.state.r = rSelected;
+    }
+    rSelected = this.state.r;
+    this.setState({ rSelected });
+  }
+
   componentDidMount() {
     fetch('http://10.3.132.187:3000/user')
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
-        for (var i = 0; i< 1000; i++) {
-          var addUser = this.state.userId.concat(data[0][i].key);
-          var addCount = this.state.count.concat(data[0][i].doc_count);
-          // console.log(data[0][i])
-          this.setState({ userId: addUser });
-          this.setState({ count: addCount });
-        }
+        this.setState({ user: data[0]});
+        // console.log(this.state.user[0].key);
       })
   }
 
@@ -106,12 +128,12 @@ export default class User extends Component {
                     </thead>
                     <tbody>
                       {
+                        this.state.user &&
                         numbers.map((d,index) => {
                           d += (10*(this.state.page-1));
-                          // console.log(d);
                           return <tr key={index}>
-                            <td value={this.state.userId[d]} onClick={() => this.toggleCollapse(this.state.userId[d])}>{this.state.userId[d]}</td>
-                            <td>{this.state.count[d]}</td>
+                            <td className="table-hover" value={this.state.user[d].key} onClick={() => this.toggleCollapse(this.state.user[d].key)}>{this.state.user[d].key}</td>
+                            <td>{this.state.user[d].doc_count}</td>
                           </tr>
                         })
                       }
@@ -143,54 +165,67 @@ export default class User extends Component {
             <Col lg="6">
               <Collapse isOpen={this.state.collapse}>
                 <Card body inverse style={{ backgroundColor: 'rgb(39, 41, 61)' }}>
-                  <CardTitle>
+                  <CardBody>
+                    <CardTitle>
                       <Row>
-                        <Col xs="12" md="8" lg="8"><h4>{this.state.value}</h4></Col>
+                        <Col xs="10" md="10" lg="10"><h4>{this.state.value}</h4></Col>
+                        <Col xs="2" md="2" lg="2">
+                          <ToggleSwitch
+                            checked
+                            ref={(node) => {
+                              this.toggleSwitch = node;
+                            }}
+                          />
+                        </Col>
                       </Row>
                     </CardTitle>
-                  <CardBody>
                     <Table className="table-text">
                       <thead>
                         <tr className="text-center">
-                          <th>User ID</th>
-                          <th>IP Type</th>
-                          <th>Source</th>
-                          <th>Destination</th>
+                          <th>IP</th>
+                          <th>Count</th>
+                          {/* <th>Destination Port/IP</th> */}
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>sdfsdf@ku.th</td>
-                          <td>1000</td>
-                          <td>src</td>
-                          <td>dest</td>
-                        </tr>
-                        <tr>
-                          <td>sdfsdf@ku.th</td>
-                          <td>1000</td>
-                          <td>src</td>
-                          <td>dest</td>
-                        </tr>
-                        <tr>
-                          <td>sdfsdf@ku.th</td>
-                          <td>1000</td>
-                          <td>src</td>
-                          <td>dest</td>
-                        </tr>
-                        <tr>
-                          <td>sdfsdf@ku.th</td>
-                          <td>1000</td>
-                          <td>src</td>
-                          <td>dest</td>
-                        </tr>
-                        <tr>
-                          <td>sdfsdf@ku.th</td>
-                          <td>1000</td>
-                          <td>src</td>
-                          <td>dest</td>
-                        </tr>
+                        {
+                          this.state.userIP &&
+                          numbers.map((d,index) => {
+                            d += (10*(this.state.r-1));
+                            return <tr key={index}>
+                              <td>{this.state.userIP[d].key}</td>
+                              <td>{this.state.userIP[d].doc_count}</td>
+                              {/* <td>
+                                <ButtonGroup>
+                                  <Button size="sm">Port</Button>
+                                  <Button size="sm">IP</Button>
+                                </ButtonGroup>
+                              </td> */}
+                            </tr>
+                          })
+                        }
                       </tbody>
                     </Table>
+                    <Row>
+                      <Col xs={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 6, offset: 3 }}>
+                        <ButtonGroup>
+                          <Button onClick={() => this.onNext('back')}><FontAwesomeIcon icon="chevron-left" color="white" size="lg" /></Button>
+                          {
+                            buttons.map((b, index) => {
+                              let i = 0;
+                              if (this.state.r%5 != 0) {
+                                i = Math.floor(this.state.r/5);
+                              } else {
+                                i = (this.state.r/5) - 1;
+                              }
+                              b += i*5;
+                              return <Button key={index} onClick={() => this.onNext(b)} active={this.state.r === b}>{b}</Button>
+                            })
+                          }
+                          <Button onClick={() => this.onNext('next')}><FontAwesomeIcon icon="chevron-right" color="white" size="lg" /></Button>
+                        </ButtonGroup>
+                      </Col>
+                    </Row>
                   </CardBody>
                 </Card>
               </Collapse>

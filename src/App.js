@@ -23,7 +23,7 @@ class App extends Component {
 
   getComponent = (p) => {
     this.setState({path: p});
-    console.log(this.state.path);
+    // console.log(this.state.path);
   }
   
   render() {
