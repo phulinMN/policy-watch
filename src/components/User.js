@@ -22,7 +22,47 @@ export default class User extends Component {
       page: 1,
       value: 0,
       r: 1,
-      checked: false
+      checked: false,
+      data: {
+        nodes: [{
+          name: 'a',
+        }, {
+          name: 'b'
+        }, {
+          name: 'a1'
+        }, {
+          name: 'a2'
+        }, {
+          name: 'b1'
+        }, {
+          name: 'c'
+        }],
+        links: [{
+          source: 'a',
+          target: 'a1',
+          value: 5
+        }, {
+          source: 'a',
+          target: 'a2',
+          value: 3
+        }, {
+          source: 'b',
+          target: 'b1',
+          value: 8
+        }, {
+          source: 'a',
+          target: 'b1',
+          value: 3
+        }, {
+          source: 'b1',
+          target: 'a1',
+          value: 1
+        }, {
+          source: 'b1',
+          target: 'c',
+          value: 2
+        }]
+      }
     };
     this.switchGraph = this.switchGraph.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
@@ -100,6 +140,22 @@ export default class User extends Component {
     console.log(this.state.checked);
   }
 
+  getOption = () => ({
+    series: {
+      type: 'sankey',
+      layout:'none',
+      focusNodeAdjacency: 'allEdges',
+      label: {
+        color: 'white'
+      },
+      lineStyle: {
+        color: '#fff'
+      },
+      data: this.state.data.nodes,
+      links: this.state.data.links
+    }
+  })
+
   render() {
     let numbers = []
     for (var i = 0; i < 10; i++) {
@@ -115,33 +171,73 @@ export default class User extends Component {
                 <CardBody>
                   <CardTitle>
                     <Row>
-                      <Col xs="12" md="8" lg="8"><h4>User Request</h4></Col>
+                      <Col xs="10" md="10" lg="10"><h4>Flow Count</h4></Col>
+                      <Col xs="2" md="2" lg="2">
+                        <ToggleSwitch
+                          checked={this.state.checked}
+                          onChange={this.switchGraph}
+                        />
+                      </Col>
                     </Row>
                   </CardTitle>
-                  <Table className="table-text">
-                    <thead>
-                      <tr className="text-center">
-                        <th>
-                          User ID
-                        </th>
-                        <th>
-                          Request User
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        this.state.user &&
-                        numbers.map((d,index) => {
-                          d += (10*(this.state.page-1));
-                          return <tr key={index}>
-                            <td className="table-hover" value={this.state.user[d].key} onClick={() => this.toggleCollapse(this.state.user[d].key)}>{this.state.user[d].key}</td>
-                            <td>{this.state.user[d].doc_count}</td>
-                          </tr>
-                        })
-                      }
-                    </tbody>
-                  </Table>
+                  {
+                    !this.state.checked &&
+                    <Table className="table-text">
+                      <thead>
+                        <tr className="text-center">
+                          <th>
+                            User ID
+                          </th>
+                          <th>
+                          Flow Count
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          this.state.user &&
+                          numbers.map((d,index) => {
+                            d += (10*(this.state.page-1));
+                            return <tr key={index}>
+                              <td className="table-hover" value={this.state.user[d].key} onClick={() => this.toggleCollapse(this.state.user[d].key)}>{this.state.user[d].key}</td>
+                              <td>{this.state.user[d].doc_count}</td>
+                            </tr>
+                          })
+                        }
+                      </tbody>
+                    </Table>
+                  }
+                  {
+                    this.state.checked &&
+                    <Table className="table-text">
+                      <thead>
+                        <tr className="text-center">
+                          <th>
+                            User ID
+                          </th>
+                          <th>
+                          Send Count
+                          </th>
+                          <th>
+                          Send Byte
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          this.state.user &&
+                          numbers.map((d,index) => {
+                            d += (10*(this.state.page-1));
+                            return <tr key={index}>
+                              <td className="table-hover" value={this.state.user[d].key} onClick={() => this.toggleCollapse(this.state.user[d].key)}>{this.state.user[d].key}</td>
+                              <td>{this.state.user[d].doc_count}</td>
+                              <td>{this.state.user[d].doc_count}</td>
+                            </tr>
+                          })
+                        }
+                      </tbody>
+                    </Table>
+                  }
                   <Row>
                     <Col xs={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 6, offset: 3 }}>
                       <ButtonGroup>
@@ -172,12 +268,6 @@ export default class User extends Component {
                     <CardTitle>
                       <Row>
                         <Col xs="10" md="10" lg="10"><h4>{this.state.value}</h4></Col>
-                        <Col xs="2" md="2" lg="2">
-                          <ToggleSwitch
-                            checked={this.state.checked}
-                            onChange={this.switchGraph}
-                          />
-                        </Col>
                       </Row>
                     </CardTitle>
                     <Table className="table-text">
@@ -232,6 +322,33 @@ export default class User extends Component {
               </Collapse>
             </Col>
           </Row>
+        </div>
+        <div className="card-box">
+          <Card body inverse style={{ backgroundColor: 'rgb(39, 41, 61)' }}>
+            <CardBody>
+              <CardTitle>
+                <Row>
+                  <Col xs="12" md="4" lg="8"><h2>Visualize well known port</h2></Col>
+                  <Col xs="12" md="8" lg="4">
+                    {/* <ButtonGroup>
+                      <Button>port no.</Button>
+                      <Button>port no.</Button>
+                      <Button>port no.</Button>
+                    </ButtonGroup> */}
+                  </Col>
+                </Row>
+              </CardTitle>
+              {
+                this.state.data &&
+                <ReactEcharts
+                option={this.getOption()}
+                style={{height: '400px', width: '100%'}}
+                opts={{ renderer: 'svg' }}
+                className='react_for_echarts'
+                />
+              }
+            </CardBody>
+          </Card>
         </div>
       </div>
     );
