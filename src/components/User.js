@@ -18,6 +18,7 @@ export default class User extends Component {
       sideBar: true,
       collapse: false,
       user: null,
+      info: null,
       userIP: null,
       page: 1,
       value: 0,
@@ -98,6 +99,12 @@ export default class User extends Component {
       .then(data => {
         this.setState({ user: data[0]});
         // console.log(this.state.user[0].key);
+      })
+    fetch('http://10.3.132.187:3000/user_send_info')
+      .then(dataWrappedByPromise => dataWrappedByPromise.json())
+      .then(data => {
+        console.log(data[0]);
+        this.setState({ info: data[0]});
       })
     this.state.data.nodes = [{
       name: 'a',
@@ -219,7 +226,7 @@ export default class User extends Component {
                             d += (10*(this.state.page-1));
                             return <tr key={index}>
                               <td className="table-hover" value={this.state.user[d].key} onClick={() => this.toggleCollapse(this.state.user[d].key)}>{this.state.user[d].key}</td>
-                              <td>{this.state.user[d].doc_count}</td>
+                              <td className="text-center">{this.state.user[d].doc_count}</td>
                             </tr>
                           })
                         }
@@ -235,22 +242,22 @@ export default class User extends Component {
                             User ID
                           </th>
                           <th>
-                          Send Count
+                          Packet Send
                           </th>
                           <th>
-                          Send Byte
+                          Byte Send
                           </th>
                         </tr>
                       </thead>
                       <tbody>
                         {
-                          this.state.user &&
+                          this.state.info &&
                           numbers.map((d,index) => {
                             d += (10*(this.state.page-1));
                             return <tr key={index}>
-                              <td className="table-hover" value={this.state.user[d].key} onClick={() => this.toggleCollapse(this.state.user[d].key)}>{this.state.user[d].key}</td>
-                              <td>{this.state.user[d].doc_count}</td>
-                              <td>{this.state.user[d].doc_count}</td>
+                              <td className="table-hover" value={this.state.info[d].key} onClick={() => this.toggleCollapse(this.state.info[d].key)}>{this.state.info[d].key}</td>
+                              <td className="text-center">{this.state.info[d].packet_send.value}</td>
+                              <td className="text-center">{this.state.info[d].byte_send.value}</td>
                             </tr>
                           })
                         }
@@ -347,14 +354,7 @@ export default class User extends Component {
             <CardBody>
               <CardTitle>
                 <Row>
-                  <Col xs="12" md="4" lg="8"><h2>Visualize well known port</h2></Col>
-                  <Col xs="12" md="8" lg="4">
-                    {/* <ButtonGroup>
-                      <Button>port no.</Button>
-                      <Button>port no.</Button>
-                      <Button>port no.</Button>
-                    </ButtonGroup> */}
-                  </Col>
+                  <Col xs="12" md="4" lg="8"><h2>Visualize</h2></Col>
                 </Row>
               </CardTitle>
               {
