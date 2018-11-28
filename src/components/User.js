@@ -24,47 +24,12 @@ export default class User extends Component {
       r: 1,
       checked: false,
       data: {
-        nodes: [{
-          name: 'a',
-        }, {
-          name: 'b'
-        }, {
-          name: 'a1'
-        }, {
-          name: 'a2'
-        }, {
-          name: 'b1'
-        }, {
-          name: 'c'
-        }],
-        links: [{
-          source: 'a',
-          target: 'a1',
-          value: 5
-        }, {
-          source: 'a',
-          target: 'a2',
-          value: 3
-        }, {
-          source: 'b',
-          target: 'b1',
-          value: 8
-        }, {
-          source: 'a',
-          target: 'b1',
-          value: 3
-        }, {
-          source: 'b1',
-          target: 'a1',
-          value: 1
-        }, {
-          source: 'b1',
-          target: 'c',
-          value: 2
-        }]
+        nodes: [],
+        links: []
       }
     };
     this.switchGraph = this.switchGraph.bind(this);
+    this.getDataSankey = this.getDataSankey.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
     this.onNext = this.onNext.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
@@ -134,10 +99,64 @@ export default class User extends Component {
         this.setState({ user: data[0]});
         // console.log(this.state.user[0].key);
       })
+    this.state.data.nodes = [{
+      name: 'a',
+    }, {
+      name: 'b'
+    }, {
+      name: 'a1'
+    }, {
+      name: 'a2'
+    }, {
+      name: 'b1'
+    }, {
+      name: 'c'
+    }];
+    this.state.data.links = [{
+      source: 'a',
+      target: 'a1',
+      value: 5
+    }, {
+      source: 'a',
+      target: 'a2',
+      value: 3
+    }, {
+      source: 'b',
+      target: 'b1',
+      value: 8
+    }, {
+      source: 'a',
+      target: 'b1',
+      value: 3
+    }, {
+      source: 'b1',
+      target: 'a1',
+      value: 1
+    }, {
+      source: 'b1',
+      target: 'c',
+      value: 2
+    }]
+    this.getDataSankey();
   }
   switchGraph(event) {
     this.setState({ checked: !this.state.checked });
     console.log(this.state.checked);
+  }
+
+  getDataSankey() {
+    // var joined = this.state.myArray.concat({name: 'd'});
+    const data = this.state.data;
+    data.nodes.push({name: 'd'});
+    data.links.push({
+      source: 'a',
+      target: 'd',
+      value: 5
+    });
+    this.setState({
+      data: data
+    })
+    console.log(this.state.data.nodes);
   }
 
   getOption = () => ({
