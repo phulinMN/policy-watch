@@ -197,7 +197,14 @@ export default class User extends Component {
                 <CardBody>
                   <CardTitle>
                     <Row>
-                      <Col xs="10" md="10" lg="10"><h4>Flow Count</h4></Col>
+                      {
+                        !this.state.checked &&
+                        <Col xs="10" md="10" lg="10"><h4>Flow Count</h4></Col>
+                      }
+                      {
+                        this.state.checked &&
+                        <Col xs="10" md="10" lg="10"><h4>Flow-Byte</h4></Col>
+                      }
                       <Col xs="2" md="2" lg="2">
                         <ToggleSwitch
                           checked={this.state.checked}
@@ -354,7 +361,7 @@ export default class User extends Component {
             <CardBody>
               <CardTitle>
                 <Row>
-                  <Col xs="12" md="4" lg="8"><h2>Visualize</h2></Col>
+                  <Col xs="12" md="4" lg="8"><h2>Visualize User => Port IP</h2></Col>
                 </Row>
               </CardTitle>
               {

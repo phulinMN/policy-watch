@@ -42,3 +42,8 @@
   border-color: #cd23b2 !important;
   border-color: #e14eca !important;;
 }
+
+.head-bar {
+  display: flex;
+  justify-content: space-between;
+}

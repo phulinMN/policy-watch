@@ -5,6 +5,9 @@ import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/rea
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie, faUser } from '@fortawesome/free-solid-svg-icons'
+
+import DateRangePickerWrapper from './DateRangePickerWrapper'
+
 library.add(faChartPie, faUser)
 
 export default class NavbarApp extends Component {
@@ -62,7 +65,10 @@ export default class NavbarApp extends Component {
           </SideNav.Nav>
         </SideNav>
         <div className={ this.state.isOpen ? "Navbar expand" : "Navbar"}>
-          <h2 className="">Policy Watch</h2>
+          <div className="head-bar">
+            <h2>Policy Watch</h2>
+            <DateRangePickerWrapper />
+          </div>
         </div>
       </div>
     );
