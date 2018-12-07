@@ -37,7 +37,7 @@ export default class NavbarApp extends Component {
   render() {
     return (
       <div>
-        <SideNav style={{'position': 'fixed'}}
+        <SideNav className="sidebar-custom" 
           onSelect={(selected) => {
             this.selectedNav(selected);
             console.log(selected)
