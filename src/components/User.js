@@ -103,83 +103,37 @@ export default class User extends Component {
     fetch('http://10.3.132.187:3000/user_send_info')
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
-        console.log(data[0]);
         this.setState({ info: data[0]});
+        this.getDataTreemap();
       })
-    this.state.data.nodes = [{
-      name: 'a',
-    }, {
-      name: 'b'
-    }, {
-      name: 'a1'
-    }, {
-      name: 'a2'
-    }, {
-      name: 'b1'
-    }, {
-      name: 'c'
-    }];
-    this.state.data.links = [{
-      source: 'a',
-      target: 'a1',
-      value: 5
-    }, {
-      source: 'a',
-      target: 'a2',
-      value: 3
-    }, {
-      source: 'b',
-      target: 'b1',
-      value: 8
-    }, {
-      source: 'a',
-      target: 'b1',
-      value: 3
-    }, {
-      source: 'b1',
-      target: 'a1',
-      value: 1
-    }, {
-      source: 'b1',
-      target: 'c',
-      value: 2
-    }]
-    this.getDataSankey();
   }
   switchGraph(event) {
     this.setState({ checked: !this.state.checked });
     console.log(this.state.checked);
   }
 
-  getDataSankey() {
-    // var joined = this.state.myArray.concat({name: 'd'});
-    const data = this.state.data;
-    data.nodes.push({name: 'd'});
-    data.links.push({
-      source: 'a',
-      target: 'd',
-      value: 5
-    });
+  getDataTreemap() {
+    const info = this.state.info;
+    const data = [];
+    var child = {};
+    for (let i = 0; i <= 100; i++) {
+      if (i > 0) {
+        data.push({
+          name: info[i].key,
+          value: info[i].byte_send.value
+        });
+      } 
+    }
     this.setState({
       data: data
     })
-    console.log(this.state.data.nodes);
   }
 
   getOption = () => ({
-    series: {
-      type: 'sankey',
-      layout:'none',
-      focusNodeAdjacency: 'allEdges',
-      label: {
-        color: 'white'
-      },
-      lineStyle: {
-        color: '#fff'
-      },
-      data: this.state.data.nodes,
-      links: this.state.data.links
-    }
+    series: [{
+      type: 'treemap',
+      data: this.state.data
+    }]
   })
 
   render() {
