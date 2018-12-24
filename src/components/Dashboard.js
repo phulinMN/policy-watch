@@ -7,6 +7,7 @@ import '../App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie, faStroopwafel, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { isNumber } from 'util';
 library.add(faChartPie, faStroopwafel, faChevronLeft, faChevronRight)
 
 export default class Dashboard extends Component {
@@ -16,15 +17,15 @@ export default class Dashboard extends Component {
       sideBar: true,
       country: null,
       port: null,
+      value: '',
       page: 1,
-      value: ''
+      display: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
   }
 
   handleChange(event) {
-    console.log(event.target.value);
     this.setState({value: event.target.value});
   }
 
@@ -56,7 +57,7 @@ export default class Dashboard extends Component {
       fetch('http://10.3.132.187:3000/port')
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
-          this.setState({ port: data[0] });
+        this.setState({ port: data[0] });
       })
   }
 
@@ -164,7 +165,7 @@ export default class Dashboard extends Component {
                       {
                         this.state.country &&
                         numbers.map((d, index) => {
-                          return <tr key={index}>
+                          return <tr key={index} className={ this.state.checkSearch ? "show" : ""}>
                             <td>{d+1}</td>
                             <td>{this.state.country[d].key}</td>
                             <td>{this.state.country[d].doc_count}</td>
@@ -185,35 +186,41 @@ export default class Dashboard extends Component {
                       <Col xs="6" md="6" lg="4"><Input type="text" value={this.state.value} onChange={this.handleChange} name="search" id="searchPort" placeholder="Search" /></Col>
                     </Row>
                   </CardTitle>
-                  <Table className="table-text">
-                    <thead>
-                      <tr className="text-center">
-                        <th>
-                          Port No.
-                        </th>
-                        <th>
-                          Name
-                        </th>
-                        <th className="text-center">
-                          Count
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        this.state.port &&
-                        numbers.map((d,index) => {
-                          d += (10*(this.state.page-1));
-                          // console.log(d);
-                          return <tr key={index}>
-                            <td>{this.state.port[d].key}</td>
-                            <td>...</td>
-                            <td>{this.state.port[d].doc_count}</td>
-                          </tr>
-                        })
-                      }
-                    </tbody>
-                  </Table>
+                  {
+                    this.state.port && 
+                    <Table className="table-text" id="port-table">
+                      <thead>
+                        <tr className="text-center">
+                          <th>
+                            Port No.
+                          </th>
+                          <th>
+                            Name
+                          </th>
+                          <th className="text-center">
+                            Count
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          this.state.port
+                            // .filter(item => item.key == parseInt(this.state.value || this.state.value == '')
+                            .filter(item => item.key.toString().indexOf(this.state.value) > -1 || this.state.value == '')
+                            .map((item,index) => {
+                              // console.log(index);
+                              var d = index;
+                              d += (10*(this.state.page-1));
+                              return  <tr key={index}>
+                              <td>{item.key}</td>
+                              <td>...</td>
+                              <td>{item.doc_count}</td>
+                            </tr>
+                          })
+                        }
+                      </tbody>
+                    </Table>
+                  }
                   <Row>
                     <Col xs={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 6, offset: 3 }}>
                       <ButtonGroup>
