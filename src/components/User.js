@@ -30,7 +30,7 @@ export default class User extends Component {
       }
     };
     this.switchGraph = this.switchGraph.bind(this);
-    this.getDataSankey = this.getDataSankey.bind(this);
+    this.getDataTreemap = this.getDataTreemap.bind(this);
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
     this.onNext = this.onNext.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);

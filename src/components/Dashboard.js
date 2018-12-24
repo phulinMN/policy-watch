@@ -194,9 +194,9 @@ export default class Dashboard extends Component {
                           <th>
                             Port No.
                           </th>
-                          <th>
+                          {/* <th>
                             Name
-                          </th>
+                          </th> */}
                           <th className="text-center">
                             Count
                           </th>
@@ -207,13 +207,19 @@ export default class Dashboard extends Component {
                           this.state.port
                             // .filter(item => item.key == parseInt(this.state.value || this.state.value == '')
                             .filter(item => item.key.toString().indexOf(this.state.value) > -1 || this.state.value == '')
+                            .filter((item,index) => {
+                              // console.log(index);
+                              if(index >= (this.state.page-1)*10 && index < (this.state.page)*10){
+                                console.log(index)
+                              }
+                              return index >= (this.state.page-1)*10 && index < (this.state.page)*10;
+                            })
                             .map((item,index) => {
                               // console.log(index);
-                              var d = index;
-                              d += (10*(this.state.page-1));
+                              // console.log(this.state.page)
                               return  <tr key={index}>
                               <td>{item.key}</td>
-                              <td>...</td>
+                              {/* <td>...</td> */}
                               <td>{item.doc_count}</td>
                             </tr>
                           })
