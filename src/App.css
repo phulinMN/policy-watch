@@ -48,10 +48,6 @@
   justify-content: space-between;
 }
 
-.show {
-  display: none;
-}
-
 .sidebar-custom {
   background: #ba54f5;
   background: -webkit-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);

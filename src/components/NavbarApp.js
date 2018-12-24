@@ -67,7 +67,7 @@ export default class NavbarApp extends Component {
         <div className={ this.state.isOpen ? "Navbar expand" : "Navbar"}>
           <div className="head-bar">
             <h2>Policy Watch</h2>
-            <DateRangePickerWrapper />
+            {/* <DateRangePickerWrapper /> */}
           </div>
         </div>
       </div>

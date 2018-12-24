@@ -26,7 +26,7 @@ export default class Dashboard extends Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({value: event.target.value, page: 1});
   }
 
   myCallback = (dataFromChild) => {
@@ -194,9 +194,6 @@ export default class Dashboard extends Component {
                           <th>
                             Port No.
                           </th>
-                          {/* <th>
-                            Name
-                          </th> */}
                           <th className="text-center">
                             Count
                           </th>
@@ -205,7 +202,6 @@ export default class Dashboard extends Component {
                       <tbody>
                         {
                           this.state.port
-                            // .filter(item => item.key == parseInt(this.state.value || this.state.value == '')
                             .filter(item => item.key.toString().indexOf(this.state.value) > -1 || this.state.value == '')
                             .filter((item,index) => {
                               // console.log(index);
@@ -215,11 +211,8 @@ export default class Dashboard extends Component {
                               return index >= (this.state.page-1)*10 && index < (this.state.page)*10;
                             })
                             .map((item,index) => {
-                              // console.log(index);
-                              // console.log(this.state.page)
                               return  <tr key={index}>
                               <td>{item.key}</td>
-                              {/* <td>...</td> */}
                               <td>{item.doc_count}</td>
                             </tr>
                           })

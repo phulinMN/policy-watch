@@ -37,7 +37,6 @@ export default class User extends Component {
   }
   myCallback = (dataFromChild) => {
     this.setState({ sideBar: dataFromChild });
-  // console.log(this.state.sideBar)
   }
 
   toggle() {
@@ -48,17 +47,15 @@ export default class User extends Component {
   }
 
   toggleCollapse(p) {
-    this.state.collapse = true;
-    // console.log(p);
-    this.setState({ collapse: this.state.collapse });
-    if (p != this.state.value) {
-      this.setState({ value: p });
-    }
+    this.setState({
+      collapse: true,
+      value: p
+    });
     fetch('http://10.3.132.187:3000/user_info/'+ p)
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
         this.setState({ userIP: data[0] });
-        // console.log(this.state.userIP);
+        // console.log(this.state.value, this.state.collapse);
       })
   }
   onRadioBtnClick(rSelected) {
@@ -98,8 +95,8 @@ export default class User extends Component {
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
         this.setState({ user: data[0]});
-        // console.log(this.state.user[0].key);
       })
+    
     fetch('http://10.3.132.187:3000/user_send_info')
       .then(dataWrappedByPromise => dataWrappedByPromise.json())
       .then(data => {
@@ -108,8 +105,10 @@ export default class User extends Component {
       })
   }
   switchGraph(event) {
-    this.setState({ checked: !this.state.checked });
-    console.log(this.state.checked);
+    this.setState({
+      checked: !this.state.checked,
+      page: 1
+    });
   }
 
   getDataTreemap() {
@@ -132,15 +131,24 @@ export default class User extends Component {
   getOption = () => ({
     series: [{
       type: 'treemap',
+      tooltip: {},
+      levels: [
+        {
+          itemStyle: {
+            normal: {
+              borderWidth: 3,
+              borderColor: '#fff',
+              gapWidth: 3
+            }
+          }
+        }
+      ],
       data: this.state.data
-    }]
+    }],
+    color: ['#BF3535', '#BF3535', '#BF3535']
   })
 
   render() {
-    let numbers = []
-    for (var i = 0; i < 10; i++) {
-      numbers.push(i);
-    }
     const buttons = [1, 2, 3, 4, 5];
     return (
       <div className={ this.state.sideBar ? "content" : "content expand"}>
@@ -183,11 +191,16 @@ export default class User extends Component {
                       <tbody>
                         {
                           this.state.user &&
-                          numbers.map((d,index) => {
-                            d += (10*(this.state.page-1));
+                          this.state.user
+                            .filter((item,index) => {
+                              if(index >= (this.state.page-1)*10 && index < (this.state.page)*10){
+                              }
+                              return index >= (this.state.page-1)*10 && index < (this.state.page)*10;
+                            })
+                            .map((item,index) => {
                             return <tr key={index}>
-                              <td className="table-hover" value={this.state.user[d].key} onClick={() => this.toggleCollapse(this.state.user[d].key)}>{this.state.user[d].key}</td>
-                              <td className="text-center">{this.state.user[d].doc_count}</td>
+                              <td className="table-hover" value={item.key} onClick={() => this.toggleCollapse(item.key)}>{item.key}</td>
+                              <td className="text-center">{item.doc_count}</td>
                             </tr>
                           })
                         }
@@ -213,12 +226,15 @@ export default class User extends Component {
                       <tbody>
                         {
                           this.state.info &&
-                          numbers.map((d,index) => {
-                            d += (10*(this.state.page-1));
+                          this.state.info
+                            .filter((item,index) => {
+                              return index >= (this.state.page-1)*10 && index < (this.state.page)*10;
+                            })
+                            .map((item,index) => {
                             return <tr key={index}>
-                              <td className="table-hover" value={this.state.info[d].key} onClick={() => this.toggleCollapse(this.state.info[d].key)}>{this.state.info[d].key}</td>
-                              <td className="text-center">{this.state.info[d].packet_send.value}</td>
-                              <td className="text-center">{this.state.info[d].byte_send.value}</td>
+                              <td className="table-hover" value={item.key} onClick={() => this.toggleCollapse(item.key)}>{item.key}</td>
+                              <td className="text-center">{item.packet_send.value}</td>
+                              <td className="text-center">{item.byte_send.value}</td>
                             </tr>
                           })
                         }
@@ -262,25 +278,21 @@ export default class User extends Component {
                         <tr className="text-center">
                           <th>IP</th>
                           <th>Count</th>
-                          {/* <th>Destination Port/IP</th> */}
                         </tr>
                       </thead>
                       <tbody>
                         {
                           this.state.userIP &&
-                          numbers.map((d,index) => {
-                            d += (10*(this.state.r-1));
-                            return <tr key={index}>
-                              <td>{this.state.userIP[d].key}</td>
-                              <td>{this.state.userIP[d].doc_count}</td>
-                              {/* <td>
-                                <ButtonGroup>
-                                  <Button size="sm">Port</Button>
-                                  <Button size="sm">IP</Button>
-                                </ButtonGroup>
-                              </td> */}
-                            </tr>
-                          })
+                          this.state.userIP
+                            .filter((item,index) => {
+                              return index >= (this.state.r-1)*10 && index < (this.state.r)*10;
+                            })
+                            .map((item,index) => {
+                              return <tr key={index}>
+                                <td>{item.key}</td>
+                                <td>{item.doc_count}</td>
+                              </tr>
+                            })
                         }
                       </tbody>
                     </Table>
