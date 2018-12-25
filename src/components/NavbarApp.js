@@ -4,11 +4,11 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartPie, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faChartPie, faUser, faSearchLocation  } from '@fortawesome/free-solid-svg-icons'
 
 import DateRangePickerWrapper from './DateRangePickerWrapper'
 
-library.add(faChartPie, faUser)
+library.add(faChartPie, faUser, faSearchLocation )
 
 export default class NavbarApp extends Component {
   constructor(props) {
@@ -60,6 +60,14 @@ export default class NavbarApp extends Component {
                   </NavIcon>
                   <NavText>
                       <Link to="/user-request">User Request</Link>
+                  </NavText>
+              </NavItem>
+              <NavItem eventKey="port">
+                  <NavIcon>
+                    <Link to="/port"><FontAwesomeIcon icon="search-location" color="white" size="lg" /></Link>
+                  </NavIcon>
+                  <NavText>
+                      <Link to="/port">User Request</Link>
                   </NavText>
               </NavItem>
           </SideNav.Nav>

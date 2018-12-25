@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 // import logo from './logo.svg';
 import NavbarApp from './components/NavbarApp'
 import User from './components/User'
+import Port from './components/Port'
 import Dashboard from './components/Dashboard'
 
 
@@ -35,6 +36,7 @@ class App extends Component {
           </header>
           <Route exact path="/" component={Dashboard} />
           <Route path="/user-request" component={User} />
+          <Route path="/port" component={Port} />
         </div>
       </Router>
     );
