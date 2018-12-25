@@ -127,25 +127,52 @@ export default class User extends Component {
       data: data
     })
   }
-
   getOption = () => ({
+    tooltip: {},
     series: [{
       type: 'treemap',
-      tooltip: {},
       levels: [
         {
+          colorMappingBy: 'value',
           itemStyle: {
-            normal: {
-              borderWidth: 3,
-              borderColor: '#fff',
-              gapWidth: 3
-            }
+              normal: {
+                  borderColor: '#777',
+                  borderWidth: 0,
+                  gapWidth: 1
+              }
+          },
+          upperLabel: {
+              normal: {
+                  show: false
+              }
           }
-        }
+      },
+      {
+          itemStyle: {
+              normal: {
+                  borderColor: '#555',
+                  borderWidth: 5,
+                  gapWidth: 1
+              },
+              emphasis: {
+                  borderColor: '#ddd'
+              }
+          }
+      },
+      {
+          colorSaturation: [0.35, 0.5],
+          itemStyle: {
+              normal: {
+                  borderWidth: 5,
+                  gapWidth: 1,
+                  borderColorSaturation: 0.6
+              }
+          }
+      }
       ],
       data: this.state.data
     }],
-    color: ['#BF3535', '#BF3535', '#BF3535']
+    color: ['#EEE5E9', '#FC6F6F', '#FC5F5F','#FD4848']
   })
 
   render() {
@@ -327,7 +354,7 @@ export default class User extends Component {
             <CardBody>
               <CardTitle>
                 <Row>
-                  <Col xs="12" md="4" lg="8"><h2>Visualize User => Port IP</h2></Col>
+                  <Col xs="12" md="4" lg="8"><h2>Flow count treemap</h2></Col>
                 </Row>
               </CardTitle>
               {

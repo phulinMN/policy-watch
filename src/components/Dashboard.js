@@ -68,7 +68,7 @@ export default class Dashboard extends Component {
       data:['销量']
     },
     // color: '#1d8cf8',
-    color: '#e14eca',
+    color: '#E669B9',
     xAxis: {
       type: 'category',
       nameTextStyle: {
@@ -202,7 +202,8 @@ export default class Dashboard extends Component {
                       <tbody>
                         {
                           this.state.port
-                            .filter(item => item.key.toString().indexOf(this.state.value) > -1 || this.state.value == '')
+                            // .filter(item => item.key.toString().indexOf(this.state.value) > -1 || this.state.value == '')
+                            .filter(item => item.key.toString() == this.state.value || this.state.value == '')
                             .filter((item,index) => {
                               // console.log(index);
                               if(index >= (this.state.page-1)*10 && index < (this.state.page)*10){
